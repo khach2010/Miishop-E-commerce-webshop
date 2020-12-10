@@ -3,7 +3,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUserProfile } from '../actions/userActions'
 
 const ProfileScreen = ({ location, history }) => {
   const [name, setName] = useState('')
@@ -14,17 +14,20 @@ const ProfileScreen = ({ location, history }) => {
 
   const dispatch = useDispatch()
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const userDetails = useSelector((state) => state.userDetails)
   const { loading, error, user } = userDetails
 
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
+  const { success } = userUpdateProfile
 
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
     } else {
-      if (!user) {
+      if (!user.name) {
         dispatch(getUserDetails('profile'))
       } else {
         setName(user.name)
@@ -36,18 +39,19 @@ const ProfileScreen = ({ location, history }) => {
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      setMessage('Passwords do not match, try again')
+      setMessage('Passwords do not match')
     } else {
-      // DISPATCH UPDATE PROFILE
+      dispatch(updateUserProfile({ id: user._id, name, email, password }))
     }
   }
 
   return (
     <Row>
-      <Col md={3}>
+      <Col md={4}>
         <h2>User Profile</h2>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
+        {success && <Message variant="success">Profile Updated</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name">
@@ -95,7 +99,7 @@ const ProfileScreen = ({ location, history }) => {
           </Button>
         </Form>
       </Col>
-      <Col md={9}>
+      <Col md={8}>
         <h2>My Orders</h2>
       </Col>
     </Row>
