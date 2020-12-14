@@ -40,12 +40,12 @@ export const cartReducer = (
         shippingAddress: action.payload,
       }
     }
-    case CART_SAVE_PAYMENT_METHOD: {
+
+    case CART_SAVE_PAYMENT_METHOD:
       return {
         ...state,
-        payment: action.payload,
+        paymentMethod: action.payload,
       }
-    }
 
     default:
       return state

@@ -46,7 +46,7 @@ const PaymentScreen = ({ history }) => {
               label="Stripe"
               id="Stripe"
               name="paymentMethod"
-              value="Stripe"
+              value="stripe"
               onChanged={(e) => setPaymentMethod(e.target.value)}
             ></Form.Check>
           </Col>
