@@ -180,6 +180,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
   }
 }
 
+//LIST USERS
 export const listUsers = () => async (dispatch, getState) => {
   try {
     dispatch({
